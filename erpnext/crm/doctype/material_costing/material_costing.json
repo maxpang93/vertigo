@@ -1,0 +1,86 @@
+{
+ "_liked_by": "[\"Administrator\"]",
+ "creation": "2022-03-07 15:47:41.796008",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "material_specification",
+  "remark",
+  "column_break_3",
+  "qty",
+  "unit_price",
+  "unit",
+  "section_break_7",
+  "subtotal"
+ ],
+ "fields": [
+  {
+   "columns": 2,
+   "fieldname": "material_specification",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Material Specification"
+  },
+  {
+   "columns": 2,
+   "fieldname": "remark",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Remark"
+  },
+  {
+   "columns": 1,
+   "fieldname": "qty",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Qty"
+  },
+  {
+   "columns": 2,
+   "fieldname": "unit_price",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Unit Price",
+   "options": "Company:company:default_currency",
+   "precision": "2"
+  },
+  {
+   "columns": 1,
+   "fieldname": "unit",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Unit",
+   "options": "UOM"
+  },
+  {
+   "fieldname": "section_break_7",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "columns": 2,
+   "fieldname": "subtotal",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Subtotal",
+   "options": "Company:company:default_currency",
+   "precision": "2",
+   "read_only": 1
+  }
+ ],
+ "istable": 1,
+ "modified": "2022-03-09 11:17:25.620108",
+ "modified_by": "Administrator",
+ "module": "CRM",
+ "name": "Material Costing",
+ "owner": "Administrator",
+ "permissions": [],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

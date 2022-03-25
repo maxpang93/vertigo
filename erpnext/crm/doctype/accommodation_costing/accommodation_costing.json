@@ -1,0 +1,82 @@
+{
+ "_liked_by": "[\"Administrator\"]",
+ "creation": "2022-03-08 10:28:34.602329",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "accommodation_type",
+  "remark",
+  "qty",
+  "timeframeduration",
+  "unit",
+  "unit_price",
+  "subtotal"
+ ],
+ "fields": [
+  {
+   "columns": 2,
+   "fieldname": "accommodation_type",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Accommodation Type"
+  },
+  {
+   "columns": 2,
+   "fieldname": "remark",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Remark "
+  },
+  {
+   "columns": 1,
+   "fieldname": "qty",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Qty"
+  },
+  {
+   "columns": 1,
+   "fieldname": "timeframeduration",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Timeframe"
+  },
+  {
+   "columns": 1,
+   "fieldname": "unit",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Unit",
+   "options": "Hrs\nDays\nWeeks\nMonths"
+  },
+  {
+   "columns": 1,
+   "fieldname": "unit_price",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Unit Price",
+   "options": "Company:company:default_currency"
+  },
+  {
+   "columns": 2,
+   "fieldname": "subtotal",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Subtotal ",
+   "options": "Company:company:default_currency",
+   "read_only": 1
+  }
+ ],
+ "istable": 1,
+ "modified": "2022-03-08 12:23:21.419251",
+ "modified_by": "Administrator",
+ "module": "CRM",
+ "name": "Accommodation Costing",
+ "owner": "Administrator",
+ "permissions": [],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
