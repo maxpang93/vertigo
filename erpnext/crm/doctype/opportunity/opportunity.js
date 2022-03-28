@@ -207,77 +207,6 @@ cur_frm.cscript.item_code = function (doc, cdt, cdn) {
 	}
 }
 
-/*
-const costing_sheet_calc = (frm, cdt, cdn) => {
-	var table = locals[cdt]
-	var row = table[cdn];
-	//if(row.qty && row.unit_price) row.subtotal = row.qty * row.unit_price
-	let subtotal = (row.qty || 0) * (row.unit_price || 0);
-	row.subtotal = subtotal
-	frappe.model.set_value(cdt, cdn, "subtotal", subtotal)
-
-	let total = 0;
-	for (let v of Object.values(table)) {
-		console.log(v.subtotal)
-		total += v.subtotal
-	}
-
-	if (cdt == "Material Costing") {
-		frm.doc.set_value({
-			total_material_cost: total,
-			material_cost: total,
-		})
-	}
-
-	if (cdt == "Manpower Costing") {
-		frm.doc.set_value({
-			total_manpower_cost: total,
-			manpower_cost: total,
-		})
-	}
-
-	if (cdt == "Tools Costing") {
-		frm.set_value({
-			total_tools_cost: total,
-			tools_equipment_cost: total,
-		})
-	}
-
-	if (cdt == "Transport Costing") {
-		frm.set_value({
-			total_transport_cost: total,
-			transport_cost: total,
-		})
-	}
-
-	if (cdt == "Accommodation Costing") {
-		frm.set_value({
-			total_accommodation_cost: total,
-			accommodation_cost: total,
-		})
-	}
-
-	if (cdt == "Other Costing") {
-		frm.set_value({
-			total_others_cost: total,
-			others_cost: total,
-		})
-	}
-
-	let self = Object.values(locals["Opportunity"])[0];
-	//let self = frm.doc
-	console.log("Opp. own instance =>", self)
-	let total_sum = self.material_cost + self.manpower_cost + self.tools_equipment_cost + self.transport_cost + self.accommodation_cost + self.total_others_cost
-	console.log(self.material_cost, self.manpower_cost, self.tools_equipment_cost, self.transport_cost, self.accommodation_cost, self.total_others_cost, total_sum)
-	frm.set_value({
-		total_cost: total_sum,
-		admin_cost: total_sum * 2.5 / 100,
-	})
-	//refresh_field()
-	//frm.refresh()
-}
-*/
-
 const custom_tables = [
 	'Material Costing',
 	'Manpower Costing',
@@ -314,19 +243,10 @@ for (let t of custom_tables) {
 			event_response.other_costing_remove = calc_table
 			break;
 	}
-	/*
-	if (t == "Material Costing") event_response.material_costing_remove = calc_table
-	if (t == "Manpower Costing") event_response.manpower_costing_remove = calc_table
-	if (t == "Tools Costing") event_response.tools_costing_remove = calc_table
-	if (t == "Transport Costing") event_response.transport_costing_remove = calc_table
-	if (t == "Accommodation Costing") event_response.accommodation_costing_remove = calc_table
-	if (t == "Other Costing") event_response.other_costing_remove = calc_table
-	*/
 	frappe.ui.form.on(t, event_response)
 }
 
 function calc_row(frm, cdt, cdn) {
-	log("inside table_calc")
 	let row = frappe.get_doc(cdt, cdn);
 	frappe.model.set_value(cdt, cdn, "subtotal", (row.qty || 0) * (row.unit_price || 0))
 	calc_table(frm, cdt)
@@ -368,7 +288,6 @@ function calc_table(frm, cdt) {
 }
 
 function onchange_table_total_costing(frm) {
-	log("inside onchange_table_total_costing")
 	let f = frm.doc;
 	let total = 0;
 	total += f.total_material_cost + f.total_manpower_cost + f.total_tools_cost + f.total_transport_cost + f.total_accommodation_cost + f.total_others_cost
@@ -393,41 +312,3 @@ frappe.ui.form.on("Opportunity", {
 	total_accommodation_cost: onchange_table_total_costing,
 	total_others_cost: onchange_table_total_costing,
 })
-
-function log(...msg) {
-	console.log(...msg)
-}
-
-
-
-/*
-frappe.ui.form.on('Material Costing', {
-qty: costing_sheet_calc,
-unit_price: costing_sheet_calc,
-})
-
-frappe.ui.form.on('Manpower Costing', {
-qty: costing_sheet_calc,
-unit_price: costing_sheet_calc,
-})
-
-frappe.ui.form.on('Manpower Costing', {
-qty: costing_sheet_calc,
-unit_price: costing_sheet_calc,
-})
-
-frappe.ui.form.on('Transport Costing', {
-qty: costing_sheet_calc,
-unit_price: costing_sheet_calc,
-})
-
-frappe.ui.form.on('Accommodation Costing', {
-qty: costing_sheet_calc,
-unit_price: costing_sheet_calc,
-})
-
-frappe.ui.form.on('Other Costing', {
-qty: costing_sheet_calc,
-unit_price: costing_sheet_calc,
-})
-*/

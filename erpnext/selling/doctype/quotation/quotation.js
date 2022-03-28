@@ -226,7 +226,6 @@ function calc_profit_margin(frm) {
 	setTimeout(() => {
 		log("inside calc_profit_margin")
 		if (frm.doc.opportunity_cost) {
-			//log("setting profit_margin ...")
 			frm.set_value({
 				profit_margin: (frm.doc.grand_total - frm.doc.opportunity_cost) * 100 / frm.doc.opportunity_cost
 			})
@@ -237,20 +236,7 @@ function calc_profit_margin(frm) {
 frappe.ui.form.on("Quotation", {
 	total: calc_profit_margin,
 	taxes_and_charges: calc_profit_margin,
-	/*
-	net_total: calc_profit_margin,
-	base_total: calc_profit_margin,
-	base_net_total: calc_profit_margin,
-	totals: calc_profit_margin,
-	base_grand_total: calc_profit_margin,
-	*/
-	//grand_total: calc_profit_margin,
 	opportunity_cost: calc_profit_margin,
-	/* doesn't work
-	before_workflow_action: (frm) => {
-		console.log(frm.selected_workflow_action)
-	}
-	*/
 	apply_discount_on: calc_profit_margin,
 	additional_discount_percentage: calc_profit_margin,
 	additional_discount_percentage_remove: calc_profit_margin,
@@ -259,16 +245,12 @@ frappe.ui.form.on("Quotation", {
 
 })
 
-
-
 function update_opportunity_cost(frm) {
 	if (frm.doc.hasOwnProperty("opportunity") && frm.doc.opportunity) {
-		//log("opportunity name =>", frm.doc.opportunity)
 		frm.call("get_opportunity_cost", { name: frm.doc.opportunity }).then(res => {
 			if (res.message) {
 				let total_cost = res.message
 				if (total_cost == frm.doc.opportunity_cost) return;
-				//log("updating opportunity_cost ...")
 				frm.set_value({
 					opportunity_cost: total_cost
 				})
@@ -299,7 +281,3 @@ frappe.ui.form.on("Sales Taxes and Charges", {
 	tax_amount: calc_profit_margin,
 	taxes_remove: calc_profit_margin,
 })
-
-function log(...msg) {
-	console.log(...msg)
-}
