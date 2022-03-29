@@ -3,7 +3,6 @@
 
 from __future__ import unicode_literals
 from logging import raiseExceptions
-from signal import raise_signal
 import frappe
 from frappe.model.mapper import get_mapped_doc
 from frappe.utils import flt, nowdate, getdate
