@@ -224,7 +224,6 @@ frappe.ui.form.on("Quotation Item", "stock_balance", function (frm, cdt, cdn) {
 // max
 function calc_profit_margin(frm) {
 	setTimeout(() => {
-		log("inside calc_profit_margin")
 		if (frm.doc.opportunity_cost) {
 			frm.set_value({
 				profit_margin: (frm.doc.grand_total - frm.doc.opportunity_cost) * 100 / frm.doc.opportunity_cost

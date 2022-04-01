@@ -120,16 +120,25 @@ class Quotation(SellingController):
 		print(type(name))
 		return frappe.get_doc("Opportunity",name).total_cost
 
+	#def on_update(self): ## DEPRECATED: In new flow, the approval doesn't branch off based on grand_total or profit_margin
+	#	print("Quotation => on_update")
+	#	if self.workflow_state not in ["Pending Branch Manager for Approval", "Pending Head of Department for Approval", "Pending Managing Director for Approval"]:
+	#		return
+	#	if self.grand_total < self.opportunity_cost:
+	#		frappe.msgprint("grand total < opportunity cost", raise_exception=True, title="ERROR")
+	#	elif self.grand_total < 1e4 and self.profit_margin < 20:
+	#		frappe.msgprint("profit margin < 20%", raise_exception=True, title="ERROR")
+	#	elif 1e4 <= self.grand_total < 4e5 and self.profit_margin < 10:
+	#		frappe.msgprint("profit margin < 10%", raise_exception=True, title="ERROR")
+
 	def on_update(self):
-		print("inside on_update")
-		if self.workflow_state not in ["Pending Branch Manager for Approval", "Pending Head of Department for Approval", "Pending Managing Director for Approval"]:
-			return
+		print("Quotation => on_update")
 		if self.grand_total < self.opportunity_cost:
-			frappe.msgprint("grand total < opportunity cost", raise_exception=True, title="ERROR")
-		elif self.grand_total < 1e4 and self.profit_margin < 20:
-			frappe.msgprint("profit margin < 20%", raise_exception=True, title="ERROR")
-		elif 1e4 <= self.grand_total < 4e5 and self.profit_margin < 10:
-			frappe.msgprint("profit margin < 10%", raise_exception=True, title="ERROR")
+			frappe.msgprint("Opportunity Cost is greater than the Grand Total", raise_exception=True, title="ERROR")
+
+	def on_trash(self):
+		if self.workflow_state != "Saved Draft":
+			frappe.throw(_('Only status: "Saved Draft" can be deleted.'))
 
 def get_list_context(context=None):
 	from erpnext.controllers.website_list_for_contact import get_list_context
