@@ -21,11 +21,35 @@ def get_data():
 					"name": "Asset Category",
 					"onboard": 1,
 				},
+				#{
+				#	"type": "doctype",
+				#	"name": "Asset Movement",
+				#	"description": _("Transfer an asset from one warehouse to another")
+				#},
 				{
 					"type": "doctype",
-					"name": "Asset Movement",
-					"description": _("Transfer an asset from one warehouse to another")
+					"name": "Asset Booking",
+					"onboard": 1,
+                                        "description": _("Book assets based on project")
 				},
+                                {
+                                        "type": "doctype",
+                                        "name": "Asset Booking Log"
+                                },
+				{
+					"type": "doctype",
+					"name": "Asset Journal",
+					"onboard": 1,
+                                        "description": _("Issue or Return assets based on project")
+				},
+                                {
+                                        "type": "doctype",
+                                        "name": "Asset Journal Log"
+                                },
+                                #{
+                                #    "type": "doctype",
+                                #    "name": "Asset Return"
+                                #},
 			]
 		},
 		{

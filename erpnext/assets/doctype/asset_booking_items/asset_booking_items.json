@@ -1,0 +1,113 @@
+{
+ "_liked_by": "[\"Administrator\"]",
+ "creation": "2022-03-29 14:26:16.426913",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "asset",
+  "current_location",
+  "from_date",
+  "to_date",
+  "required_location",
+  "project",
+  "requesting_employee",
+  "asset_booking_log",
+  "available",
+  "remarks"
+ ],
+ "fields": [
+  {
+   "columns": 2,
+   "fieldname": "asset",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Asset",
+   "options": "Asset",
+   "reqd": 1
+  },
+  {
+   "columns": 2,
+   "fetch_from": "asset.location",
+   "fetch_if_empty": 1,
+   "fieldname": "current_location",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Current Location",
+   "options": "Location",
+   "read_only": 1
+  },
+  {
+   "columns": 2,
+   "fieldname": "from_date",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Required From",
+   "reqd": 1
+  },
+  {
+   "columns": 2,
+   "fieldname": "to_date",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Required To "
+  },
+  {
+   "columns": 2,
+   "fieldname": "required_location",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Required At",
+   "options": "Location",
+   "reqd": 1
+  },
+  {
+   "fieldname": "project",
+   "fieldtype": "Link",
+   "label": "Project",
+   "options": "Project",
+   "read_only": 1
+  },
+  {
+   "fieldname": "asset_booking_log",
+   "fieldtype": "Link",
+   "label": "Asset Booking Log",
+   "no_copy": 1,
+   "options": "Asset Booking Log",
+   "read_only": 1
+  },
+  {
+   "fieldname": "requesting_employee",
+   "fieldtype": "Link",
+   "label": "Requesting Employee",
+   "options": "Employee",
+   "read_only": 1
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Long Text",
+   "hidden": 1,
+   "label": "Remarks",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "available",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "Available",
+   "read_only": 1
+  }
+ ],
+ "istable": 1,
+ "modified": "2022-04-27 10:14:11.428227",
+ "modified_by": "Administrator",
+ "module": "Assets",
+ "name": "Asset Booking Items",
+ "owner": "Administrator",
+ "permissions": [],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
