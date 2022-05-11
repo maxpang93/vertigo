@@ -3,6 +3,7 @@
 # For license information, please see license.txt
 
 from __future__ import unicode_literals
+from select import select
 import frappe
 from frappe.model.document import Document
 from frappe import _
@@ -59,7 +60,13 @@ class AssetJournal(Document):
 		if self.docstatus in [1,2]: ## Cancelled or Submitted
 			frappe.throw(_("Submitted or Cancelled records cannot be deleted"))
 
-def make_asset_issue(asset_booking):
+@frappe.whitelist()
+def make_asset_issue(asset_booking,selected_items=None):
+	print(f"\n {selected_items} \t {type(selected_items) is str}")
+	if selected_items and isinstance(selected_items, str):
+		import json
+		selected_items = json.loads(selected_items)
+
 	doc = frappe.new_doc("Asset Journal")
 	doc.transaction_type = "Issue"
 	doc.booking_request = asset_booking
@@ -73,26 +80,46 @@ def make_asset_issue(asset_booking):
 	doc.requesting_employee = booking.requesting_employee
 	doc.project = booking.project
 	doc.insert()
-
-	booking_items = frappe.db.get_list("Asset Booking Items", 
-			filters = {"parent": asset_booking},
-			fields = ["asset","current_location","required_location"]
-		)
-
-	for item in booking_items:
+	print(f"\n after create parent doc")
+	
+	from datetime import datetime
+	def add_item(parent, item):
+		print(f"\n item => {item}")
 		child = frappe.new_doc("Asset Journal Items")
 		#child.docstatus = doc.docstatus
-		child.parent = doc.name
+		child.parent = parent.name
 		child.parentfield = "journal_items"
 		child.parenttype = "Asset Journal"
-		child.asset = item.asset
-		child.from_location = item.current_location
-		child.to_location = item.required_location
-		child.from_custodian = frappe.get_doc("Asset",item.asset).custodian
-		child.to_custodian = booking.requesting_employee
+		child.asset = item["asset"] #or item.asset
+		child.from_location = item["current_location"] #or item.current_location
+		child.to_location = item["required_location"] #or item.required_location
+		child.from_custodian = frappe.get_doc("Asset",item["asset"]).custodian #or frappe.get_doc("Asset", item.asset).custodian
+		child.to_custodian = item["custodian"] #or item.custodian
+		child.posting_date = datetime.now()
+		child.asset_booking = parent.booking_request
+		child.project = parent.project
 		#print(f"\n asset_issue table row => {child.to_custodian}\t {booking.requesting_employee}")
 		child.insert()
 
+	print(f"\n before create child items")
+	if selected_items:
+		print(f"\n {selected_items}")
+		for selected in selected_items:
+			print(f"\n item => {selected}")
+			if isinstance(selected, str):
+				item = frappe.db.get_value('Asset Booking Items', selected, ["asset","current_location","required_location","custodian"], as_dict=1)
+				add_item(doc, item)
+			else:
+				add_item(doc, selected)
+	else: 
+		booking_items = frappe.db.get_list("Asset Booking Items", 
+			filters = {"parent": asset_booking},
+			fields = ["asset","current_location","required_location, custodian"]
+		)
+		for item in booking_items:
+			add_item(doc, item)
+	
+	print(f"\n after create child items")
 	return doc.name
 
 def make_asset_return(asset_issue):
@@ -143,7 +170,7 @@ def create_asset_issue(source_name, target_doc=None):
 				"field_map": {
 					"company":"company",
 					"posting_date":"posting_date",
-					"requesting_employee":"requesting_employee",
+					"custodian":"custodian",
 					"project":"project",
 				},
 				"postprocess": add_details
@@ -160,7 +187,7 @@ def create_asset_issue(source_name, target_doc=None):
 			}
 		}, target_doc)
 
-	return doclist
+	return doclist.insert()
 
 @frappe.whitelist()
 def create_asset_return(source_name, target_doc=None):
@@ -194,7 +221,7 @@ def create_asset_return(source_name, target_doc=None):
 			}
 		}, target_doc)
 
-	return doclist
+	return doclist.insert()
 
 
 

@@ -1,6 +1,5 @@
 {
- "_liked_by": "[\"Administrator\"]",
- "creation": "2022-04-07 10:29:33.446648",
+ "creation": "2022-05-04 16:32:40.642510",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -10,8 +9,9 @@
   "to_location",
   "from_custodian",
   "to_custodian",
-  "amended_from",
   "transaction_type",
+  "posting_date",
+  "amended_from",
   "asset_booking"
  ],
  "fields": [
@@ -21,6 +21,7 @@
    "in_list_view": 1,
    "label": "Asset",
    "options": "Asset",
+   "read_only": 1,
    "reqd": 1
   },
   {
@@ -28,70 +29,72 @@
    "fieldtype": "Link",
    "label": "Amended From",
    "no_copy": 1,
-   "options": "Asset Journal Log",
+   "options": "Asset Transfer Log",
    "print_hide": 1,
    "read_only": 1
   },
   {
-   "fieldname": "amended_from",
-   "fieldtype": "Link",
-   "label": "Amended From",
-   "no_copy": 1,
-   "options": "Asset Journal Log",
-   "print_hide": 1,
-   "read_only": 1
+   "fieldname": "transaction_type",
+   "fieldtype": "Select",
+   "label": "Transaction Type",
+   "options": "Issue\nReturn",
+   "read_only": 1,
+   "reqd": 1
   },
   {
    "fieldname": "from_location",
    "fieldtype": "Link",
    "in_list_view": 1,
-   "label": "Source Location",
+   "label": "From Location",
    "options": "Location",
+   "read_only": 1,
    "reqd": 1
   },
   {
    "fieldname": "to_location",
    "fieldtype": "Link",
    "in_list_view": 1,
-   "label": "Target Location",
+   "label": "To Location",
    "options": "Location",
-   "reqd": 1
-  },
-  {
-   "fieldname": "transaction_type",
-   "fieldtype": "Data",
-   "label": "Transaction Type",
-   "options": "Issue\nReturn",
+   "read_only": 1,
    "reqd": 1
   },
   {
    "fieldname": "from_custodian",
    "fieldtype": "Link",
    "in_list_view": 1,
-   "label": "Current Custodian",
+   "label": "From Custodian",
    "options": "Employee",
+   "read_only": 1,
    "reqd": 1
   },
   {
    "fieldname": "to_custodian",
    "fieldtype": "Link",
-   "label": "New Custodian",
+   "label": "To Custodian",
    "options": "Employee",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "posting_date",
+   "fieldtype": "Datetime",
+   "label": "Issue/Return Date",
+   "read_only": 1,
    "reqd": 1
   },
   {
    "fieldname": "asset_booking",
    "fieldtype": "Link",
    "label": "Asset Booking",
-   "options": "Asset Booking",
-   "read_only": 1
+   "options": "Asset Booking"
   }
  ],
  "is_submittable": 1,
- "modified": "2022-05-06 15:23:20.312769",
+ "modified": "2022-05-06 15:24:14.311994",
  "modified_by": "Administrator",
  "module": "Assets",
- "name": "Asset Journal Log",
+ "name": "Asset Transfer Log",
  "owner": "Administrator",
  "permissions": [
   {

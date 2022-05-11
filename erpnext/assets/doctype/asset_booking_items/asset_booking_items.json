@@ -11,13 +11,14 @@
   "to_date",
   "required_location",
   "project",
-  "requesting_employee",
+  "custodian",
   "asset_booking_log",
   "available",
   "remarks"
  ],
  "fields": [
   {
+   "allow_in_quick_entry": 1,
    "columns": 2,
    "fieldname": "asset",
    "fieldtype": "Link",
@@ -38,7 +39,8 @@
    "read_only": 1
   },
   {
-   "columns": 2,
+   "allow_in_quick_entry": 1,
+   "columns": 1,
    "fieldname": "from_date",
    "fieldtype": "Datetime",
    "in_list_view": 1,
@@ -46,13 +48,15 @@
    "reqd": 1
   },
   {
-   "columns": 2,
+   "allow_in_quick_entry": 1,
+   "columns": 1,
    "fieldname": "to_date",
    "fieldtype": "Datetime",
    "in_list_view": 1,
    "label": "Required To "
   },
   {
+   "allow_in_quick_entry": 1,
    "columns": 2,
    "fieldname": "required_location",
    "fieldtype": "Link",
@@ -77,13 +81,6 @@
    "read_only": 1
   },
   {
-   "fieldname": "requesting_employee",
-   "fieldtype": "Link",
-   "label": "Requesting Employee",
-   "options": "Employee",
-   "read_only": 1
-  },
-  {
    "fieldname": "remarks",
    "fieldtype": "Long Text",
    "hidden": 1,
@@ -97,10 +94,20 @@
    "hidden": 1,
    "label": "Available",
    "read_only": 1
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "columns": 2,
+   "fieldname": "custodian",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Custodian",
+   "options": "Employee",
+   "reqd": 1
   }
  ],
  "istable": 1,
- "modified": "2022-04-27 10:14:11.428227",
+ "modified": "2022-05-02 21:47:28.481662",
  "modified_by": "Administrator",
  "module": "Assets",
  "name": "Asset Booking Items",

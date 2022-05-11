@@ -11,7 +11,7 @@
   "to_date",
   "required_location",
   "project",
-  "requesting_employee",
+  "custodian",
   "amended_from"
  ],
  "fields": [
@@ -61,15 +61,15 @@
    "read_only": 1
   },
   {
-   "fieldname": "requesting_employee",
+   "fieldname": "custodian",
    "fieldtype": "Link",
    "in_standard_filter": 1,
-   "label": "Requesting Employee",
+   "label": "Custodian",
    "options": "Employee"
   }
  ],
  "is_submittable": 1,
- "modified": "2022-04-21 17:16:12.152612",
+ "modified": "2022-05-04 15:48:13.015011",
  "modified_by": "Administrator",
  "module": "Assets",
  "name": "Asset Booking Log",

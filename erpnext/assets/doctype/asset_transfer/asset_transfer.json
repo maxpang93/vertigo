@@ -1,40 +1,21 @@
 {
- "_liked_by": "[\"Administrator\"]",
  "autoname": "naming_series:",
- "creation": "2022-04-07 10:24:48.299679",
+ "creation": "2022-05-04 16:30:29.728696",
  "doctype": "DocType",
- "document_type": "Document",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
   "naming_series",
-  "amended_from",
   "company",
+  "transaction_type",
   "posting_date",
-  "requesting_employee",
+  "custodian",
+  "booking_request",
   "project",
-  "booking_items"
+  "transfer_items",
+  "amended_from"
  ],
  "fields": [
-  {
-   "fieldname": "naming_series",
-   "fieldtype": "Select",
-   "label": "Series",
-   "no_copy": 1,
-   "options": "AST-BK-.YYYY.-",
-   "print_hide": 1,
-   "reqd": 1,
-   "set_only_once": 1
-  },
-  {
-   "fieldname": "amended_from",
-   "fieldtype": "Link",
-   "label": "Amended From",
-   "no_copy": 1,
-   "options": "Asset Booking",
-   "print_hide": 1,
-   "read_only": 1
-  },
   {
    "fieldname": "company",
    "fieldtype": "Link",
@@ -45,18 +26,49 @@
    "reqd": 1
   },
   {
-   "default": "Today",
-   "fieldname": "posting_date",
-   "fieldtype": "Date",
-   "label": "Posting Date",
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Asset Transfer",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "transaction_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Transaction Type",
+   "options": "Issue\nReturn",
    "reqd": 1
   },
   {
-   "fieldname": "requesting_employee",
+   "fieldname": "posting_date",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Issue/Return Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "booking_request",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Booking Request",
+   "options": "Asset Booking"
+  },
+  {
+   "fieldname": "transfer_items",
+   "fieldtype": "Table",
+   "label": "Items",
+   "options": "Asset Transfer Items"
+  },
+  {
+   "fieldname": "custodian",
    "fieldtype": "Link",
    "in_list_view": 1,
    "in_standard_filter": 1,
-   "label": "Requesting Employee",
+   "label": "New Custodian",
    "options": "Employee",
    "reqd": 1
   },
@@ -69,28 +81,22 @@
    "options": "Project"
   },
   {
-   "allow_bulk_edit": 1,
-   "fieldname": "booking_items",
-   "fieldtype": "Table",
-   "label": "Items",
-   "options": "Asset Booking Items"
-  },
-  {
-   "fieldname": "amended_from",
-   "fieldtype": "Link",
-   "label": "Amended From",
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Series",
    "no_copy": 1,
-   "options": "Asset Booking",
+   "options": "AST-Transfer-.YYMM.-",
    "print_hide": 1,
-   "read_only": 1
+   "reqd": 1,
+   "set_only_once": 1
   }
  ],
- "icon": "fa fa-file-text",
  "is_submittable": 1,
- "modified": "2022-05-06 09:40:43.947525",
+ "modified": "2022-05-04 21:16:58.337901",
  "modified_by": "Administrator",
  "module": "Assets",
- "name": "Asset Booking",
+ "name": "Asset Transfer",
  "owner": "Administrator",
  "permissions": [
   {
@@ -106,6 +112,7 @@
    "write": 1
   }
  ],
+ "quick_entry": 1,
  "show_name_in_global_search": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
