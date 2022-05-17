@@ -4,6 +4,8 @@ Files changed:
 
 <b>Changes at 17 May 2022:</b>
 
+./erpnext/assets/doctype/asset/asset.py | asset.json | asset_dashboard.py
+
 ./erpnext/assets/doctype/asset_booking/*
 
 ./erpnext/assets/doctype/asset_booking_items/*
@@ -17,6 +19,8 @@ Files changed:
 ./erpnext/assets/doctype/asset_journal_log/*
 
 ./erpnext/config/assets.py
+
+./erpnext/hooks.py
 
 <=============================================>
 
