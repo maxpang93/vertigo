@@ -14,7 +14,11 @@
   "custodian",
   "asset_booking_log",
   "available",
-  "remarks"
+  "remarks",
+  "asset_issue",
+  "asset_issue_journal_log",
+  "asset_return",
+  "asset_return_journal_log"
  ],
  "fields": [
   {
@@ -104,10 +108,38 @@
    "label": "Custodian",
    "options": "Employee",
    "reqd": 1
+  },
+  {
+   "fieldname": "asset_issue_journal_log",
+   "fieldtype": "Link",
+   "label": "Asset Issue Journal Log",
+   "options": "Asset Journal Log",
+   "read_only": 1
+  },
+  {
+   "fieldname": "asset_return_journal_log",
+   "fieldtype": "Link",
+   "label": "Asset Return Journal Log",
+   "options": "Asset Journal Log",
+   "read_only": 1
+  },
+  {
+   "fieldname": "asset_issue",
+   "fieldtype": "Link",
+   "label": "Asset Issue",
+   "options": "Asset Journal",
+   "read_only": 1
+  },
+  {
+   "fieldname": "asset_return",
+   "fieldtype": "Link",
+   "label": "Asset Return",
+   "options": "Asset Journal",
+   "read_only": 1
   }
  ],
  "istable": 1,
- "modified": "2022-05-02 21:47:28.481662",
+ "modified": "2022-05-17 10:22:46.448564",
  "modified_by": "Administrator",
  "module": "Assets",
  "name": "Asset Booking Items",

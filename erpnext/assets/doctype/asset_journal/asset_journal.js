@@ -33,11 +33,13 @@ frappe.ui.form.on('Asset Journal', {
 			}
 		})(doc)
 
+		/* DEPRECATED: User won't use Asset Journal's UI to create asset return
 		if (doc.docstatus == 1 && doc.transaction_type == "Issue") {
 			frm.add_custom_button(__("Create Asset Return"), () => {
 				frm.trigger("create_asset_return")
 			}, __("Create"))
 		}
+		*/
 
 		/*
 		if (doc.docstatus == 0) {

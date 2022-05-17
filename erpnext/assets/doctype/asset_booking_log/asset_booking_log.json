@@ -12,12 +12,14 @@
   "required_location",
   "project",
   "custodian",
-  "amended_from"
+  "amended_from",
+  "posting_date"
  ],
  "fields": [
   {
    "fieldname": "asset",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Asset",
    "options": "Asset"
@@ -31,16 +33,19 @@
   {
    "fieldname": "from_date",
    "fieldtype": "Datetime",
+   "in_list_view": 1,
    "label": "Required From"
   },
   {
    "fieldname": "to_date",
    "fieldtype": "Datetime",
+   "in_list_view": 1,
    "label": "Required To "
   },
   {
    "fieldname": "required_location",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Required At",
    "options": "Location"
   },
@@ -66,10 +71,15 @@
    "in_standard_filter": 1,
    "label": "Custodian",
    "options": "Employee"
+  },
+  {
+   "fieldname": "posting_date",
+   "fieldtype": "Datetime",
+   "label": "Posting Date"
   }
  ],
  "is_submittable": 1,
- "modified": "2022-05-04 15:48:13.015011",
+ "modified": "2022-05-17 12:34:39.284158",
  "modified_by": "Administrator",
  "module": "Assets",
  "name": "Asset Booking Log",

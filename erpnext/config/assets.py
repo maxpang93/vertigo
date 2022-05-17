@@ -46,18 +46,6 @@ def get_data():
                                         "type": "doctype",
                                         "name": "Asset Journal Log"
                                 },
-                                #{
-                                #    "type": "doctype",
-                                #    "name": "Asset Return"
-                                #},
-                                {
-                                    "type": "doctype",
-                                    "name": "Asset Transfer",
-                                },
-                                {
-                                    "type": "doctype",
-                                    "name": "Asset Transfer Log",
-                                },
 			]
 		},
 		{
