@@ -79,7 +79,13 @@ frappe.ui.form.on('Asset', {
 		frm.toggle_display("next_depreciation_date", frm.doc.docstatus < 1);
 		frm.events.make_schedules_editable(frm);
 		frm.trigger("toggle_make_depreciation_entry");
-
+		/*
+		frm.add_custom_button("test",()=>{
+			frm.call({
+				method:"test"
+			})
+		})
+		*/
 		if (frm.doc.docstatus==1) {
 			if (in_list(["Submitted", "Partially Depreciated", "Fully Depreciated"], frm.doc.status)) {
 				frm.add_custom_button("Transfer Asset", function() {

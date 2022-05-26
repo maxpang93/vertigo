@@ -1,6 +1,6 @@
 {
  "autoname": "field:asset_name",
- "creation": "2017-10-19 16:50:22.879545",
+ "creation": "2022-05-19 11:24:29.598656",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -17,13 +17,7 @@
   "maintenance_manager",
   "maintenance_manager_name",
   "section_break_8",
-  "asset_maintenance_tasks",
-  "under_development_section",
-  "holiday_list",
-  "maintenance_tasks",
-  "make_schedule_maintenance_action",
-  "section_break_14",
-  "maintenance_schedule"
+  "asset_maintenance_tasks"
  ],
  "fields": [
   {
@@ -42,6 +36,17 @@
    "label": "Asset Category"
   },
   {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
    "fetch_from": "asset_name.item_code",
    "fieldname": "item_code",
    "fieldtype": "Read Only",
@@ -52,17 +57,6 @@
    "fieldname": "item_name",
    "fieldtype": "Read Only",
    "label": "Item Name"
-  },
-  {
-   "fieldname": "column_break_3",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "company",
-   "fieldtype": "Link",
-   "label": "Company",
-   "options": "Company",
-   "reqd": 1
   },
   {
    "fieldname": "section_break_6",
@@ -100,50 +94,17 @@
    "label": "Tasks"
   },
   {
-   "fieldname": "maintenance_tasks",
-   "fieldtype": "Table",
-   "label": "Maintenance Tasks",
-   "options": "Maintenance Task"
-  },
-  {
-   "fieldname": "section_break_14",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "maintenance_schedule",
-   "fieldtype": "Table",
-   "label": "Maintenance Schedule",
-   "options": "Asset Maintenance Schedule"
-  },
-  {
    "fieldname": "asset_maintenance_tasks",
    "fieldtype": "Table",
-   "label": "Asset Maintenance Tasks",
+   "label": "Maintenance Tasks",
    "options": "Asset Maintenance Task",
    "reqd": 1
-  },
-  {
-   "fieldname": "under_development_section",
-   "fieldtype": "Section Break",
-   "label": "Under Development"
-  },
-  {
-   "fieldname": "make_schedule_maintenance_action",
-   "fieldtype": "Button",
-   "label": "Schedule Maintenance",
-   "options": "make_maintenance_schedule"
-  },
-  {
-   "fieldname": "holiday_list",
-   "fieldtype": "Link",
-   "label": "Holiday List",
-   "options": "Holiday List"
   }
  ],
- "modified": "2022-05-23 17:32:17.636736",
+ "modified": "2022-05-19 11:24:29.598656",
  "modified_by": "Administrator",
  "module": "Assets",
- "name": "Asset Maintenance",
+ "name": "Maintenance Schedule",
  "owner": "Administrator",
  "permissions": [
   {

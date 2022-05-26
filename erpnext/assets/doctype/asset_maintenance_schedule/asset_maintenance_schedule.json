@@ -1,0 +1,178 @@
+{
+ "_liked_by": "[\"Administrator\"]",
+ "creation": "2022-05-19 11:24:29.598656",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "asset_name",
+  "company",
+  "column_break_3",
+  "item_code",
+  "item_name",
+  "section_break_6",
+  "maintenance_task",
+  "column_break_8",
+  "task_name",
+  "section_break_10",
+  "periodicity",
+  "start_date",
+  "column_break_13",
+  "duration",
+  "end_date",
+  "column_break_15",
+  "unit",
+  "section_break_9",
+  "assign_to",
+  "maintenance_status",
+  "column_break_11",
+  "assign_to_name",
+  "remarks"
+ ],
+ "fields": [
+  {
+   "fieldname": "asset_name",
+   "fieldtype": "Link",
+   "label": "Asset Name",
+   "options": "Asset",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "asset_name.item_code",
+   "fieldname": "item_code",
+   "fieldtype": "Read Only",
+   "label": "Item Code"
+  },
+  {
+   "fetch_from": "asset_name.item_name",
+   "fieldname": "item_name",
+   "fieldtype": "Read Only",
+   "label": "Item Name"
+  },
+  {
+   "fieldname": "section_break_6",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "maintenance_task",
+   "fieldtype": "Link",
+   "label": "Maintenance Task",
+   "options": "Maintenance Task"
+  },
+  {
+   "fetch_from": "maintenance_task.periodicity",
+   "fieldname": "periodicity",
+   "fieldtype": "Read Only",
+   "label": "Periodicity"
+  },
+  {
+   "fieldname": "section_break_9",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_11",
+   "fieldtype": "Column Break"
+  },
+  {
+   "columns": 2,
+   "fieldname": "start_date",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Start Date"
+  },
+  {
+   "columns": 2,
+   "fieldname": "end_date",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "End Date"
+  },
+  {
+   "columns": 2,
+   "fieldname": "assign_to",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Assign To",
+   "options": "User"
+  },
+  {
+   "fetch_from": "assign_to.full_name",
+   "fieldname": "assign_to_name",
+   "fieldtype": "Read Only",
+   "label": "Assign To Name",
+   "read_only": 1
+  },
+  {
+   "columns": 2,
+   "fetch_from": "maintenance_task.maintenance_task",
+   "fieldname": "task_name",
+   "fieldtype": "Read Only",
+   "in_list_view": 1,
+   "label": "Task Name"
+  },
+  {
+   "fieldname": "column_break_8",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_10",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_13",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "maintenance_task.duration",
+   "fieldname": "duration",
+   "fieldtype": "Read Only",
+   "label": "Duration"
+  },
+  {
+   "fieldname": "column_break_15",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "maintenance_task.unit",
+   "fieldname": "unit",
+   "fieldtype": "Read Only",
+   "label": "Unit"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Long Text",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "maintenance_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Maintenance Status",
+   "options": "Planned\nOverdue\nCancelled",
+   "reqd": 1
+  }
+ ],
+ "istable": 1,
+ "modified": "2022-05-26 15:36:24.174132",
+ "modified_by": "Administrator",
+ "module": "Assets",
+ "name": "Asset Maintenance Schedule",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

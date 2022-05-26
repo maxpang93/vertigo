@@ -81,7 +81,6 @@
    "set_only_once": 1
   },
   {
-   "depends_on": "eval: doc.transaction_type == \"Issue\"",
    "fieldname": "booking_request",
    "fieldtype": "Link",
    "label": "Booking Request",
@@ -96,7 +95,7 @@
  ],
  "icon": "fa fa-file-text",
  "is_submittable": 1,
- "modified": "2022-05-17 10:34:11.562746",
+ "modified": "2022-05-18 11:43:49.089477",
  "modified_by": "Administrator",
  "module": "Assets",
  "name": "Asset Journal",

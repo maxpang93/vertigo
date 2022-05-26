@@ -3,6 +3,7 @@
 
 frappe.ui.form.on('Asset Maintenance', {
 	setup: (frm) => {
+		console.log("setup")
 		frm.set_query("assign_to", "asset_maintenance_tasks", function(doc) {
 			return {
 				query: "erpnext.assets.doctype.asset_maintenance.asset_maintenance.get_team_members",
@@ -12,8 +13,9 @@ frappe.ui.form.on('Asset Maintenance', {
 			};
 		});
 
-		frm.set_indicator_formatter('maintenance_status',
+		frm.set_indicator_formatter('maintenance_status', //not working
 			function(doc) {
+				console.log(doc)
 				let indicator = 'blue';
 				if (doc.maintenance_status == 'Overdue') {
 					indicator = 'orange';
@@ -24,12 +26,34 @@ frappe.ui.form.on('Asset Maintenance', {
 				return indicator;
 			}
 		);
+
+		frm.set_indicator_formatter("task_name",  //not working
+			function(doc) {
+				console.log(doc)
+				let indicator = "green";
+				if (doc.remarks) {
+					indicator = "orange";
+				}
+				return indicator;
+			}
+		)
 	},
 
 	refresh: (frm) => {
+		console.log(moment().year())
 		if(!frm.is_new()) {
 			frm.trigger('make_dashboard');
 		}
+		
+		frm.add_custom_button(__("Test"), () => {
+			frm.call({
+				method: "update_asset_booking_availability"
+			})
+		});
+		
+
+
+		//frm.trigger("add_maintenance_schedule_description");
 	},
 	make_dashboard: (frm) => {
 		if(!frm.is_new()) {
@@ -58,6 +82,57 @@ frappe.ui.form.on('Asset Maintenance', {
 				}
 			});
 		}
+	},
+
+	make_maintenance_schedule: function (frm) {
+		var me = frm;
+		console.log("make_maintenance_schedule")
+		//frappe.call({
+		//	method: "erpnext.assets.doctype.asset_maintenance.asset_maintenance.make_maintenance_schedule",
+		frm.call({
+			doc: me.doc,
+			method: "make_maintenance_schedule",
+			args: {
+				name: me.doc.name,
+			},
+			callback: (r) => {
+				if (r.message) {
+					let res = r.message;
+					//console.log("res:",res)
+					if (res.alert_msg) {
+						frappe.msgprint({
+							title: __("Notification"),
+							indicator: "orange",
+							message: __(res.alert_msg)
+						})
+					}
+					if (res.response) {
+						console.log(res.response)
+					}
+				}
+			}
+		})
+	},
+
+	add_maintenance_schedule_description: function (frm) {
+		var me = frm;
+		var doc = me.doc;
+		//if (!doc.maintenance_schedule) return;
+		for (let item of doc.maintenance_schedule) {
+			//console.log(item)
+			//let row_html = $(`[data-name="${item.name}"]`).find('[data-fieldname="task_name"]')
+			//let row_html = $(`[data-name="${item.task_name}"]`)
+			let row_html = $(`[data-name="${item.name}"]`).find(`[data-name="${item.task_name}"]`)
+			if (item.remarks) {
+				console.log(item.remarks)
+				console.log(row_html)
+				row_html.attr("title", item.remarks);
+				row_html.attr("class", "indicator red");
+			} else {
+				row_html.removeAttr("title");
+				row_html.attr("class", "indicator green");
+			}
+		}
 	}
 });
 
@@ -76,6 +151,19 @@ frappe.ui.form.on('Asset Maintenance Task', {
 	}
 });
 
+
+/*
+frappe.ui.form.on("Maintenance Task",{
+	start_time: (frm, cdt, cdn) => {
+		let row = frappe.get_doc(cdt,cdn);
+		const now = moment()
+		let start_datetime = moment(now)
+		console.log("row",row.start_time)
+		//moment()
+		//frappe.model.set_value(cdt,cdn, "end_time", moment(row.start_time) )
+	},
+})
+*/
 var get_next_due_date = function (frm, cdt, cdn) {
 	var d = locals[cdt][cdn];
 	if (d.start_date && d.periodicity) {

@@ -40,7 +40,7 @@
    "fieldname": "to_date",
    "fieldtype": "Datetime",
    "in_list_view": 1,
-   "label": "Required To "
+   "label": "Required To"
   },
   {
    "fieldname": "required_location",
@@ -79,7 +79,7 @@
   }
  ],
  "is_submittable": 1,
- "modified": "2022-05-17 12:34:39.284158",
+ "modified": "2022-05-18 11:32:05.812992",
  "modified_by": "Administrator",
  "module": "Assets",
  "name": "Asset Booking Log",

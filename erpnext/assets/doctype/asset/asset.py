@@ -573,6 +573,13 @@ class Asset(AccountsController):
 
 			return 100 * (1 - flt(depreciation_rate, float_precision))
 
+@frappe.whitelist()
+def test():
+	print(f'\n test')
+	frappe.db.set_value('Asset','ACC-ASS-2022-00009',{
+		'prioritize_maintenance': True
+		})
+
 def update_maintenance_status():
 	assets = frappe.get_all('Asset', filters = {'docstatus': 1, 'maintenance_required': 1})
 

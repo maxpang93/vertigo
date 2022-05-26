@@ -111,91 +111,21 @@ class AssetBooking(Document):
 				"err_msg": f"Asset only available on <b>{available_for_use_date}</b> onwards"
 			}
 
-	def check_asset_booking_conflict(self, asset, from_date, to_date=None): ## Max: include maintenance log
-		available = True
-		remarks = None
-		print(f"\n {asset} {from_date} {to_date}")
-		logs = None
-		if to_date:
-			query = f"""
-					SELECT a.asset_name, l.from_date, l.to_date, e.first_name, l.docstatus FROM `tabAsset Booking Log` l 
-					LEFT JOIN `tabEmployee` e ON e.name=l.custodian 
-					LEFT JOIN `tabAsset` a ON a.name=l.asset 
-					WHERE l.asset='{asset}' 
-						AND ( (l.from_date BETWEEN '{from_date}' AND '{to_date}') OR (l.to_date BETWEEN '{from_date}' AND '{to_date}') OR (l.from_date < '{from_date}' AND l.to_date IS NULL) ) 
-						AND l.docstatus=1
-				"""
-			print(f"\n{query}")
-			logs = frappe.db.sql(query, as_dict=1)
-		else:
-			query = f"""
-					SELECT a.asset_name, l.from_date, l.to_date, e.first_name, l.docstatus FROM `tabAsset Booking Log` l 
-					LEFT JOIN `tabEmployee` e ON e.name=l.custodian 
-					LEFT JOIN `tabAsset` a ON a.name=l.asset 
-					WHERE l.asset='{asset}' 
-						AND ( l.to_date >= '{from_date}' OR (l.from_date < '{from_date}' AND l.to_date IS NULL) )
-						AND l.docstatus=1
-				"""
-			print(f"\n{query}")
-			logs = frappe.db.sql(query, as_dict=1)
-
-		print(f"\n logs: {logs}")
-		if len(logs) > 0 :
-			available = False
-			msgs = []
-
-			from datetime import datetime
-			def fmtdatetime(dt):
-				if isinstance(dt,datetime):
-					return dt.strftime('%Y-%m-%d %H:%M')
-				elif isinstance(dt,str):
-					return dt
-			
-			for l in logs:
-				##print(f"From Date: \n{l.from_date}\n {type(l.from_date)} \n {l.from_date.strftime('%Y-%m-%d %H:%M')}")
-				msg = f"{l.asset_name} booked by {l.first_name} from {fmtdatetime(l.from_date)} {f'to {fmtdatetime(l.to_date)}' if l.to_date else ''}"
-				msgs.append(msg)
-			remarks = "\n\n".join(msgs)
-		else:
-			doc = frappe.get_doc("Asset",asset)
-			remarks = f"{doc.asset_name}"
-
-		print(f"\n Remarks: {remarks}")
-		return [available, remarks]
+	@frappe.whitelist()
+	def update_booking_items_conflict(self):
+		for item in self.booking_items:
+			print(f"\n update_booking_items_conflict => \n\n{item}")
+			[item.available, item.remarks] = _check_conflict(item.asset, item.from_date, item.get("to_date"))
+		self.save()
 
 	@frappe.whitelist()
 	def check_booking_items_conflict(self, booking_items): ## max: had problem calling from backend's before_save and reload_doc. Now calling from frontend and return "available" & "remarks", then only save back to backend
 		for item in booking_items:
-			[item["available"], item["remarks"]] = self.check_asset_booking_conflict(item["asset"], item["from_date"], item.get("to_date"))
+			[item["available"], item["remarks"]] = _check_conflict(item["asset"], item["from_date"], item.get("to_date"))
 		return booking_items
-
-	def auto_make_asset_issue_return(self,asset_booking): ## DEPRECATED
-		from erpnext.assets.doctype.asset_journal.asset_journal import make_asset_issue, make_asset_return
-		make_asset_return(
-			make_asset_issue(asset_booking)
-		)
-
-	@frappe.whitelist()
-	def update_latest_asset_location(self, name): ## DEPRECARED: after every asset movement, auto update all booking_items' "current_location"
-		print(f'\n update_latest_asset_location =>')
-		booking_items = frappe.db.get_list("Asset Booking Items",
-			filters = {
-				"parent":name,
-			}, 
-			fields = ["name","asset"]
-		)
-		for item in booking_items:
-			location = frappe.get_doc("Asset",item.asset).location
-			frappe.db.set_value("Asset Booking Items",item.name, {"current_location":location})
 
 	@frappe.whitelist()
 	def update_booking_items(self, asset_booking, children, selected, deleted=None):
-		
-		def update_idx_deprecated(children): ## directly update from popup dialog's idx, but some entries won't appear in dialog because already issued & returned
-			for item in children:
-				frappe.db.set_value("Asset Booking Items", item["name"], {
-					"idx": item["idx"]
-				})
 		
 		def __update_idx(asset_booking):
 			items = frappe.db.get_list("Asset Booking Items",
@@ -273,3 +203,115 @@ class AssetBooking(Document):
 			raise Exception("Error when creating Asset Booking Log")
 		if args.get("name"): ## if args has "name", update booking log
 			frappe.db.set_value("Asset Booking Items",args["name"], { "asset_booking_log" : log.name })
+
+def _check_asset_booking_conflict(asset, from_date, to_date=None): ## Max: include maintenance log (Check "Asset Maintenance Schedule")
+	print(f"\n {asset} {from_date} {to_date}")
+	logs = None
+	if to_date:
+		query = f"""
+				SELECT a.asset_name, l.from_date, l.to_date, e.first_name, l.docstatus FROM `tabAsset Booking Log` l 
+				LEFT JOIN `tabEmployee` e ON e.name=l.custodian 
+				LEFT JOIN `tabAsset` a ON a.name=l.asset 
+				WHERE l.asset='{asset}' 
+					AND ( 
+						(l.from_date BETWEEN '{from_date}' AND '{to_date}')
+							OR 
+						(l.to_date BETWEEN '{from_date}' AND '{to_date}')
+							OR
+						(l.from_date < '{from_date}' AND l.to_date IS NULL) 
+					) 
+					AND l.docstatus=1
+			"""
+		print(f"\n{query}")
+		logs = frappe.db.sql(query, as_dict=1)
+	else:
+		query = f"""
+				SELECT a.asset_name, l.from_date, l.to_date, e.first_name, l.docstatus FROM `tabAsset Booking Log` l 
+				LEFT JOIN `tabEmployee` e ON e.name=l.custodian 
+				LEFT JOIN `tabAsset` a ON a.name=l.asset 
+				WHERE l.asset='{asset}' 
+					AND ( 
+						l.to_date >= '{from_date}' 
+							OR
+						(l.from_date < '{from_date}' AND l.to_date IS NULL) 
+					)
+					AND l.docstatus=1
+			"""
+		print(f"\n{query}")
+		logs = frappe.db.sql(query, as_dict=1)
+	print(f"\n logs: {logs}")
+	return logs
+
+def _check_maintenance_schedule_conflict(asset, from_date, to_date=None):
+	schedule = None
+	## if asset.prioritize_maintenance == false, no need to proceed
+	#if not frappe.get_doc("Asset", asset).prioritize_maintenance:
+	#	return []
+
+	if to_date:
+		query = f"""
+				SELECT a.asset_name, s.start_date, s.end_date, s.assign_to_name FROM `tabAsset Maintenance Schedule` s
+				LEFT JOIN `tabAsset` a ON a.name=s.asset_name
+				WHERE s.asset_name='{asset}' 
+					AND ( 
+						(s.start_date BETWEEN '{from_date}' AND '{to_date}') 
+							OR 
+						(s.end_date BETWEEN '{from_date}' AND '{to_date}') 
+					) 
+			"""
+		print(f"\n{query}")
+		schedule = frappe.db.sql(query, as_dict=1)
+	else:
+		query = f"""
+				SELECT a.asset_name, s.start_date, s.end_date, s.assign_to_name FROM `tabAsset Maintenance Schedule` s
+				LEFT JOIN `tabAsset` a ON a.name=s.asset_name
+				WHERE s.asset_name='{asset}' 
+					AND ( 
+						s.end_date >= '{from_date}' 
+					)
+			"""
+		print(f"\n{query}")
+		schedule = frappe.db.sql(query, as_dict=1)
+	print(f"\n schedule: {schedule}")
+	return schedule
+
+def _check_conflict(asset, from_date, to_date=None):
+	print("_check_conflict")
+	available = True
+	other_bookings = _check_asset_booking_conflict(asset, from_date, to_date)
+	maintenance_schedules = _check_maintenance_schedule_conflict(asset, from_date, to_date)
+	if len(other_bookings) == 0 and len(maintenance_schedules) == 0:
+		return [available, None]
+
+	prioritize_maintenance = int(frappe.get_doc("Asset",asset).prioritize_maintenance) ## boolean field returns str '0' or '1'... =.=! 
+	if len(other_bookings) > 0:
+		available = False
+	elif len(maintenance_schedules) > 0 and prioritize_maintenance:
+		print(f'\n\n prioritize_maintenance => {prioritize_maintenance}, {type(prioritize_maintenance)}')
+		available = False
+
+	msgs = []
+
+	from datetime import datetime
+	def fmtdatetime(dt):
+		if isinstance(dt,datetime):
+			return dt.strftime('%Y-%m-%d %H:%M')
+		elif isinstance(dt,str):
+			return dt
+		
+	for log in other_bookings:
+		##print(f"From Date: \n{l.from_date}\n {type(l.from_date)} \n {l.from_date.strftime('%Y-%m-%d %H:%M')}")
+		msg = f"{log.asset_name} booked by {log.first_name} from {fmtdatetime(log.from_date)} {f'to {fmtdatetime(log.to_date)}' if log.to_date else ''}"
+		msgs.append(msg)
+
+	for schedule in maintenance_schedules:
+		msg = f"{schedule.asset_name} scheduled for maintenance by {schedule.assign_to_name} from {schedule.start_date} to {schedule.end_date}"
+		msgs.append(msg)
+
+	remarks = "\n\n".join(msgs)
+	print(f"\n Remarks: {remarks}")
+	return [available, remarks]
+
+@frappe.whitelist()
+def update_booking_availability():
+	print("asset_booking => update_booking_availability")

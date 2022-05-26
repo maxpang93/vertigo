@@ -4,8 +4,18 @@
 frappe.ui.form.on('Asset Booking', {
 	refresh: async function (frm) {
 		console.log("refresh")
+		var me = frm;
 		var doc = frm.doc;
 		
+		if (doc.docstatus == 0) {
+			frm.add_custom_button(__("Check Asset Availability"), () => {
+				me.call({
+					doc: me.doc,
+					method: "update_booking_items_conflict",
+				});
+			})
+		}
+
 		if (doc.docstatus == 1) {
 			/*
 			frm.add_custom_button(__("test"), () => {
@@ -25,6 +35,7 @@ frappe.ui.form.on('Asset Booking', {
 			}, __("Create asset transfer"), "btn-default")
 		}
 		frm.trigger("add_table_desc")
+		///frm.trigger("make_field_readonly")
 	},
 
 	before_save: function (frm) {
@@ -239,11 +250,16 @@ frappe.ui.form.on('Asset Booking', {
 		//if (doc.docstatus != 0) return;
 		for (let item of doc.booking_items) {
 			let row_html = $(`[data-name="${item.name}"]`)
-
+			//console.log(row_html)
 			if (item.asset) {
 				let asset_html = $(`[data-name="${item.asset}"]`) // *frm.set_indicator_formatter changes default html elements. So instead indicator color class is forced manually
-				if (item.docstatus == 0 && item.available) {
+
+				if (item.docstatus == 0 && item.available && !item.remarks) {
 					asset_html.attr("class", "indicator green")
+					asset_html.attr("title", `${item.remarks || ''}`)
+				}
+				else if (item.docstatus == 0 && item.available && item.remarks) { // maintenance not prioritized
+					asset_html.attr("class", "indicator green") // change to other colour? cyan, blue, orange, yellow, gray, light-gray, pink, purple. light-blue
 					asset_html.attr("title", `${item.remarks || ''}`)
 				}
 				else if (item.docstatus == 0 && !item.available) {
@@ -282,6 +298,21 @@ frappe.ui.form.on('Asset Booking', {
 				custodian_html.removeAttr("title") // **
 			}
 		}
+	},
+
+	make_field_readonly: function (frm) { /// not working ideally
+		var doc = frm.doc;
+		if (!doc.booking_items) return;
+		let rows = frm.fields_dict["booking_items"].grid.grid_rows;
+		for (let row of rows) {
+			if (row.doc.available) {
+				let field_remarks = row.docfields.filter(df=> {return df.fieldname == "remarks"})
+				console.log(field_remarks)
+				field_remarks[0].read_only=1
+			}
+		}
+		frm.refresh_field("booking_items")
+		
 	},
 
 	test_update_dialog_items: function(frm) { /// Test function : to delete

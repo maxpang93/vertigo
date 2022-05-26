@@ -6,15 +6,22 @@
  "engine": "InnoDB",
  "field_order": [
   "asset",
+  "column_break_2",
+  "asset_name",
+  "section_break_4",
   "current_location",
   "from_date",
-  "to_date",
+  "column_break_7",
   "required_location",
+  "to_date",
+  "section_break_10",
   "project",
   "custodian",
-  "asset_booking_log",
+  "section_break_13",
   "available",
   "remarks",
+  "logs_section",
+  "asset_booking_log",
   "asset_issue",
   "asset_issue_journal_log",
   "asset_return",
@@ -32,19 +39,17 @@
    "reqd": 1
   },
   {
-   "columns": 2,
    "fetch_from": "asset.location",
    "fetch_if_empty": 1,
    "fieldname": "current_location",
    "fieldtype": "Link",
-   "in_list_view": 1,
    "label": "Current Location",
    "options": "Location",
    "read_only": 1
   },
   {
    "allow_in_quick_entry": 1,
-   "columns": 1,
+   "columns": 2,
    "fieldname": "from_date",
    "fieldtype": "Datetime",
    "in_list_view": 1,
@@ -53,7 +58,7 @@
   },
   {
    "allow_in_quick_entry": 1,
-   "columns": 1,
+   "columns": 2,
    "fieldname": "to_date",
    "fieldtype": "Datetime",
    "in_list_view": 1,
@@ -87,15 +92,12 @@
   {
    "fieldname": "remarks",
    "fieldtype": "Long Text",
-   "hidden": 1,
-   "label": "Remarks",
-   "read_only": 1
+   "label": "Remarks"
   },
   {
    "default": "0",
    "fieldname": "available",
    "fieldtype": "Check",
-   "hidden": 1,
    "label": "Available",
    "read_only": 1
   },
@@ -136,10 +138,41 @@
    "label": "Asset Return",
    "options": "Asset Journal",
    "read_only": 1
+  },
+  {
+   "fetch_from": "asset.asset_name",
+   "fieldname": "asset_name",
+   "fieldtype": "Read Only",
+   "label": "Asset Name"
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_4",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_7",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_10",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "section_break_13",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "logs_section",
+   "fieldtype": "Section Break",
+   "label": "Logs"
   }
  ],
  "istable": 1,
- "modified": "2022-05-17 10:22:46.448564",
+ "modified": "2022-05-26 12:51:59.034506",
  "modified_by": "Administrator",
  "module": "Assets",
  "name": "Asset Booking Items",

@@ -62,6 +62,8 @@
   "comprehensive_insurance",
   "section_break_31",
   "maintenance_required",
+  "prioritize_maintenance",
+  "maintenance_task",
   "other_details",
   "status",
   "booked_fixed_asset",
@@ -465,12 +467,25 @@
    "fieldtype": "Select",
    "label": "Asset Status",
    "options": "Idle\nIn Use\nOut-of-Service\nSold\nScrapped\nIn Maintenance"
+  },
+  {
+   "depends_on": "eval:doc.maintenance_required",
+   "fieldname": "maintenance_task",
+   "fieldtype": "Table",
+   "label": "Maintenance Task",
+   "options": "Maintenance Task"
+  },
+  {
+   "depends_on": "eval:doc.maintenance_required",
+   "fieldname": "prioritize_maintenance",
+   "fieldtype": "Code",
+   "label": "Prioritize Maintenance"
   }
  ],
  "idx": 72,
  "image_field": "image",
  "is_submittable": 1,
- "modified": "2022-04-04 11:14:20.114521",
+ "modified": "2022-05-26 09:47:38.704919",
  "modified_by": "Administrator",
  "module": "Assets",
  "name": "Asset",
