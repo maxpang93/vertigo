@@ -2,6 +2,14 @@ Files changed:
 
 <=============================================>
 
+<b>Changes at 07 June 2022:</b>
+
+./erpnext/assets/*
+
+./erpnext/hooks.py
+
+<=============================================>
+
 <b>Changes at 17 May 2022:</b>
 
 ./erpnext/assets/doctype/asset/asset.py | asset.json | asset_dashboard.py

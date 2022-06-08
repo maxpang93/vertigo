@@ -3,6 +3,7 @@
 # For license information, please see license.txt
 
 from __future__ import unicode_literals
+from select import select
 import frappe, erpnext, math, json
 from frappe import _
 from six import string_types
@@ -576,9 +577,19 @@ class Asset(AccountsController):
 @frappe.whitelist()
 def test():
 	print(f'\n test')
-	frappe.db.set_value('Asset','ACC-ASS-2022-00009',{
-		'prioritize_maintenance': True
+	return
+	frappe.db.set_value('Asset','ACC-ASS-2022-00008',{
+		'status': 'Submitted',
+		'asset_status': 'Idle'
 		})
+	
+	return
+	to_chg=frappe.db.get_list("Maintenance Task", filters={
+		'parentfield':'maintenance_task'
+	}, fields=['name'])
+	print(to_chg)
+	for each in to_chg:
+		frappe.db.set_value("Maintenance Task", each.name, 'parentfield','maintenance_tasks')
 
 def update_maintenance_status():
 	assets = frappe.get_all('Asset', filters = {'docstatus': 1, 'maintenance_required': 1})
@@ -771,3 +782,49 @@ def get_total_days(date, frequency):
 		cint(frequency) * -1)
 
 	return date_diff(date, period_start_date)
+
+@frappe.whitelist()
+def make_asset_maintenance(selected_assets, holiday_list, maintenance_team):
+	if selected_assets and isinstance(selected_assets, str):
+		import json
+		selected_assets = json.loads(selected_assets)
+
+	print(f"\n {selected_assets}")
+
+	maintenances_created = []
+	for asset in selected_assets:
+		a =  frappe.get_doc("Asset", asset)
+		print(a.name)
+
+		if not a.maintenance_required:
+			print(f"\n {a.name} doesn't require maintenance")
+			continue
+
+		if not a.maintenance_tasks:
+			print(f"\n {a.name} has no maintenance task")
+			continue
+		
+		already_exist = frappe.db.get_list("Asset Maintenance", filters={
+			"asset_name": a.name,
+			"holiday_list": holiday_list
+		},fields = ['name'])
+		print(f"\n {already_exist}")
+
+		if len(already_exist) > 0:
+			print(f"\n {a.name} already has maintenance for {holiday_list}")
+			continue
+		
+		print(f"\n {a.name} maintenance to be created")
+		maintenance = frappe.get_doc({
+			"doctype": "Asset Maintenance",
+			"asset_name": a.name,
+			"maintenance_team": maintenance_team,
+			"holiday_list": holiday_list
+		})
+		for task in a.maintenance_tasks:
+			maintenance.append('maintenance_tasks',task)
+		maintenance.insert()
+		maintenance.make_maintenance_schedule()
+		maintenances_created.append(maintenance.name)
+		##frappe.get_doc("Asset Maintenance", maintenance.name).make_maintenance_schedule()
+	return maintenances_created

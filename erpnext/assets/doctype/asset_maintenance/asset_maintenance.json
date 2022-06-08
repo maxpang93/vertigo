@@ -1,5 +1,5 @@
 {
- "autoname": "field:asset_name",
+ "autoname": "format:{asset_name}@{holiday_list}",
  "creation": "2017-10-19 16:50:22.879545",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -32,8 +32,7 @@
    "in_list_view": 1,
    "label": "Asset Name",
    "options": "Asset",
-   "reqd": 1,
-   "unique": 1
+   "reqd": 1
   },
   {
    "fetch_from": "asset_name.asset_category",
@@ -118,14 +117,13 @@
   {
    "fieldname": "asset_maintenance_tasks",
    "fieldtype": "Table",
+   "hidden": 1,
    "label": "Asset Maintenance Tasks",
-   "options": "Asset Maintenance Task",
-   "reqd": 1
+   "options": "Asset Maintenance Task"
   },
   {
    "fieldname": "under_development_section",
-   "fieldtype": "Section Break",
-   "label": "Under Development"
+   "fieldtype": "Section Break"
   },
   {
    "fieldname": "make_schedule_maintenance_action",
@@ -137,10 +135,11 @@
    "fieldname": "holiday_list",
    "fieldtype": "Link",
    "label": "Holiday List",
-   "options": "Holiday List"
+   "options": "Holiday List",
+   "reqd": 1
   }
  ],
- "modified": "2022-05-23 17:32:17.636736",
+ "modified": "2022-06-02 14:47:08.525054",
  "modified_by": "Administrator",
  "module": "Assets",
  "name": "Asset Maintenance",

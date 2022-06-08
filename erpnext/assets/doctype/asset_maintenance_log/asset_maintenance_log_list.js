@@ -3,6 +3,10 @@ frappe.listview_settings['Asset Maintenance Log'] = {
 	has_indicator_for_draft: 1,
 	get_indicator: function(doc) {
 		if (doc.maintenance_status=="Planned") {
+			return [__(doc.maintenance_status), "light-blue", "status,=," + doc.maintenance_status];
+		} else if (doc.maintenance_status=="In Progress") {
+			return [__(doc.maintenance_status), "blue", "status,=," + doc.maintenance_status];
+		} else if (doc.maintenance_status=="Delayed") {
 			return [__(doc.maintenance_status), "orange", "status,=," + doc.maintenance_status];
 		} else if (doc.maintenance_status=="Completed") {
 			return [__(doc.maintenance_status), "green", "status,=," + doc.maintenance_status];

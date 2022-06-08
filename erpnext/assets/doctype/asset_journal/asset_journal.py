@@ -3,6 +3,7 @@
 # For license information, please see license.txt
 
 from __future__ import unicode_literals
+from re import M
 from select import select
 import frappe
 from frappe.model.document import Document
@@ -133,6 +134,22 @@ def __add_return_item(parent, item):
 			"asset_return": parent.name,
 		})
 		
+def _check_asset_status(items):
+	in_maintenance = []
+	for item in items:
+		asset_name =  frappe.db.get_value('Asset Booking Items', item, "asset")
+		asset = frappe.get_doc("Asset",asset_name)
+		print(f"\n {asset.asset_status}")
+		if asset.asset_status == "In Maintenance":
+			in_maintenance.append(f"{asset.name} ( {asset.asset_name} )")
+	if len(in_maintenance) > 0:
+		err_msg = None
+		if len(in_maintenance) == 1:
+			err_msg = f"{in_maintenance[0]} is in maintenance."
+		else:
+			err_msg = f'{", ".join(in_maintenance)} are in maintenance.'
+		frappe.throw(err_msg)
+		
 
 @frappe.whitelist()
 def make_asset_issue(asset_booking, selected_items=None):
@@ -143,6 +160,8 @@ def make_asset_issue(asset_booking, selected_items=None):
 	if not selected_items or (selected_items and len(selected_items)==0): ##checks after json.loads() else len(selected_items) = len("[]") = 2
 		frappe.throw("No items are selected")
 		return
+
+	_check_asset_status(selected_items) ## untested
 
 	doc = frappe.new_doc("Asset Journal")
 	doc.transaction_type = "Issue"

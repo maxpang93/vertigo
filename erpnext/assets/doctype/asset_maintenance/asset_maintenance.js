@@ -151,6 +151,23 @@ frappe.ui.form.on('Asset Maintenance Task', {
 	}
 });
 
+frappe.ui.form.on('Asset Maintenance Schedule', {
+	before_maintenance_schedule_remove: async (frm, cdt, cdn) => {
+		console.log("deleting", cdt, cdn)
+		let row = frappe.get_doc(cdt, cdn)
+		console.log("row",row)
+		let referenced_logs = await frappe.db.get_list('Asset Maintenance Log',{
+			filters:{
+				'maintenance_schedule': cdn
+			},
+			fields: ['name','maintenance_schedule']
+		})
+		console.log(referenced_logs)
+		if (referenced_logs.length > 0) {
+			frappe.throw("Schedule is referenced in maintenance log(s). Cannot delete schedule")
+		}
+	},
+})
 
 /*
 frappe.ui.form.on("Maintenance Task",{

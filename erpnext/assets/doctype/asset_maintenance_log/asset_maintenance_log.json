@@ -1,5 +1,4 @@
 {
- "actions": [],
  "autoname": "naming_series:",
  "creation": "2017-10-23 16:58:44.424309",
  "doctype": "DocType",
@@ -14,13 +13,16 @@
   "item_code",
   "item_name",
   "section_break_5",
-  "task",
+  "maintenance_schedule",
   "task_name",
   "maintenance_type",
   "periodicity",
+  "assign_to",
   "assign_to_name",
   "column_break_6",
-  "due_date",
+  "scheduled_start_date",
+  "scheduled_end_date",
+  "start_date",
   "completion_date",
   "maintenance_status",
   "section_break_12",
@@ -36,6 +38,8 @@
   {
    "fieldname": "asset_maintenance",
    "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Asset Maintenance",
    "options": "Asset Maintenance"
   },
@@ -73,13 +77,7 @@
    "fieldtype": "Section Break"
   },
   {
-   "fieldname": "task",
-   "fieldtype": "Link",
-   "label": "Task",
-   "options": "Asset Maintenance Task"
-  },
-  {
-   "fetch_from": "task.maintenance_type",
+   "fetch_from": "maintenance_schedule.maintenance_type",
    "fieldname": "maintenance_type",
    "fieldtype": "Read Only",
    "label": "Maintenance Type"
@@ -92,26 +90,18 @@
    "read_only": 1
   },
   {
-   "fetch_from": "task.assign_to_name",
+   "fetch_from": "assign_to.name",
    "fieldname": "assign_to_name",
    "fieldtype": "Read Only",
-   "label": "Assign To"
+   "label": "Assign To Name"
   },
   {
    "fieldname": "column_break_6",
    "fieldtype": "Column Break"
   },
   {
-   "fetch_from": "task.next_due_date",
-   "fieldname": "due_date",
-   "fieldtype": "Date",
-   "in_list_view": 1,
-   "label": "Due Date",
-   "read_only": 1
-  },
-  {
    "fieldname": "completion_date",
-   "fieldtype": "Date",
+   "fieldtype": "Datetime",
    "in_list_view": 1,
    "label": "Completion Date"
   },
@@ -120,7 +110,7 @@
    "fieldtype": "Select",
    "in_standard_filter": 1,
    "label": "Maintenance Status",
-   "options": "Planned\nCompleted\nCancelled\nOverdue",
+   "options": "Planned\nDelayed\nIn Progress\nCompleted\nCancelled\nOverdue",
    "reqd": 1
   },
   {
@@ -145,7 +135,7 @@
    "fieldtype": "Column Break"
   },
   {
-   "fetch_from": "task.description",
+   "fetch_from": "maintenance_schedule.description",
    "fieldname": "description",
    "fieldtype": "Read Only",
    "label": "Description",
@@ -171,17 +161,49 @@
    "read_only": 1
   },
   {
-   "fetch_from": "task.maintenance_task",
+   "fetch_from": "maintenance_schedule.task_name",
    "fieldname": "task_name",
-   "fieldtype": "Data",
+   "fieldtype": "Read Only",
    "in_preview": 1,
    "label": "Task Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "assign_to",
+   "fieldtype": "Link",
+   "label": "Assign To",
+   "options": "User"
+  },
+  {
+   "fieldname": "start_date",
+   "fieldtype": "Datetime",
+   "label": "Start Date"
+  },
+  {
+   "fieldname": "maintenance_schedule",
+   "fieldtype": "Link",
+   "label": "Maintenance Schedule",
+   "options": "Asset Maintenance Schedule"
+  },
+  {
+   "fetch_from": "maintenance_schedule.start_date",
+   "fieldname": "scheduled_start_date",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Scheduled Start Date",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "maintenance_schedule.end_date",
+   "fieldname": "scheduled_end_date",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Scheduled End Date",
    "read_only": 1
   }
  ],
  "is_submittable": 1,
- "links": [],
- "modified": "2020-05-28 20:51:48.238397",
+ "modified": "2022-05-02 16:35:23.820820",
  "modified_by": "Administrator",
  "module": "Assets",
  "name": "Asset Maintenance Log",

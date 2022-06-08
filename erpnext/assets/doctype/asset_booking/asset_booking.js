@@ -7,7 +7,7 @@ frappe.ui.form.on('Asset Booking', {
 		var me = frm;
 		var doc = frm.doc;
 		
-		if (doc.docstatus == 0) {
+		if (doc.docstatus == 0 && !frm.is_new()) {
 			frm.add_custom_button(__("Check Asset Availability"), () => {
 				me.call({
 					doc: me.doc,
@@ -16,12 +16,37 @@ frappe.ui.form.on('Asset Booking', {
 			})
 		}
 
-		if (doc.docstatus == 1) {
-			/*
-			frm.add_custom_button(__("test"), () => {
-				frm.trigger("test_update_dialog_items")
-			}) */
+		if (frm.is_new()){
+			//console.log("is new!!")
+			const __get_no_copy_fields = (child_table_name) => {
+				let docfields= frm.fields_dict[child_table_name].grid.docfields;
+				let no_copy_fields = docfields.filter(o => { return o.no_copy }).map(o => { return o.fieldname })
+				return no_copy_fields
+			}
+			const no_copy_fields = __get_no_copy_fields("booking_items")
+			//console.log("no_copy_fields =>",no_copy_fields)
 
+			for (let item of doc.booking_items){
+				for (let field of no_copy_fields) {
+					if (item[field]) {
+						frappe.model.set_value("Asset Booking Items", item.name, field, null)
+					}
+				}
+			}
+			
+		}
+		/*
+		frm.add_custom_button(__("test"), () => {
+			let docfields= frm.fields_dict.booking_items.grid.docfields;
+			console.log(docfields)
+			//to_log = frm.get_docfield("booking_items")
+			let to_log;
+			let no_copy_fields = docfields.filter(o => { return o.no_copy && o.fieldtype == "Link"}).map(o => { return o.fieldname })
+			console.log(no_copy_fields)
+		}) 
+		*/ 
+
+		if (doc.docstatus == 1) {
 			frm.add_custom_button(__("Update Items"), () => {
 				frm.trigger("update_child_items")
 			})
@@ -41,6 +66,8 @@ frappe.ui.form.on('Asset Booking', {
 	before_save: function (frm) {
 		var doc = frm.doc
 		if (!doc.booking_items) return
+		
+		//frappe.throw("test")
 		frm.call("check_booking_items_conflict", {  // one remote call to update whole table 
 			booking_items: doc.booking_items
 		}).then(r => {

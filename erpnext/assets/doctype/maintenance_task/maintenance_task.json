@@ -27,6 +27,7 @@
  ],
  "fields": [
   {
+   "allow_on_submit": 1,
    "fieldname": "maintenance_task",
    "fieldtype": "Data",
    "in_filter": 1,
@@ -36,6 +37,7 @@
    "reqd": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "maintenance_type",
    "fieldtype": "Select",
    "label": "Maintenance Type",
@@ -50,6 +52,7 @@
    "fieldtype": "Section Break"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "periodicity",
    "fieldtype": "Select",
    "in_list_view": 1,
@@ -58,6 +61,7 @@
    "reqd": 1
   },
   {
+   "allow_on_submit": 1,
    "default": "0",
    "fieldname": "certificate_required",
    "fieldtype": "Check",
@@ -69,6 +73,7 @@
    "fieldtype": "Section Break"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "assign_to",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -80,6 +85,7 @@
    "fieldtype": "Column Break"
   },
   {
+   "allow_on_submit": 1,
    "fetch_from": "assign_to.full_name",
    "fieldname": "assign_to_name",
    "fieldtype": "Read Only",
@@ -90,6 +96,7 @@
    "fieldtype": "Section Break"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "description",
    "fieldtype": "Text Editor",
    "label": "Description"
@@ -99,6 +106,7 @@
    "fieldtype": "Column Break"
   },
   {
+   "allow_on_submit": 1,
    "columns": 1,
    "fieldname": "duration",
    "fieldtype": "Int",
@@ -107,6 +115,7 @@
    "reqd": 1
   },
   {
+   "allow_on_submit": 1,
    "columns": 1,
    "fieldname": "unit",
    "fieldtype": "Select",
@@ -116,12 +125,14 @@
    "reqd": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "start_time",
    "fieldtype": "Time",
    "label": "Start Time",
    "reqd": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "end_time",
    "fieldtype": "Time",
    "label": "End Time",
@@ -133,7 +144,7 @@
   }
  ],
  "istable": 1,
- "modified": "2022-05-25 12:27:11.158820",
+ "modified": "2022-06-01 17:09:17.201557",
  "modified_by": "Administrator",
  "module": "Assets",
  "name": "Maintenance Task",

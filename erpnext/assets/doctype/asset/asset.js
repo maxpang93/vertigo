@@ -84,8 +84,8 @@ frappe.ui.form.on('Asset', {
 			frm.call({
 				method:"test"
 			})
-		})
-		*/
+		}) */
+		
 		if (frm.doc.docstatus==1) {
 			if (in_list(["Submitted", "Partially Depreciated", "Fully Depreciated"], frm.doc.status)) {
 				frm.add_custom_button("Transfer Asset", function() {

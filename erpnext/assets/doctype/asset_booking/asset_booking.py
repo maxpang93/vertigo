@@ -3,6 +3,7 @@
 # For license information, please see license.txt
 
 from __future__ import unicode_literals
+import enum
 import frappe
 from frappe.model.document import Document
 from frappe import _
@@ -221,6 +222,7 @@ def _check_asset_booking_conflict(asset, from_date, to_date=None): ## Max: inclu
 						(l.from_date < '{from_date}' AND l.to_date IS NULL) 
 					) 
 					AND l.docstatus=1
+				ORDER BY l.from_date
 			"""
 		print(f"\n{query}")
 		logs = frappe.db.sql(query, as_dict=1)
@@ -236,6 +238,7 @@ def _check_asset_booking_conflict(asset, from_date, to_date=None): ## Max: inclu
 						(l.from_date < '{from_date}' AND l.to_date IS NULL) 
 					)
 					AND l.docstatus=1
+				ORDER BY l.from_date
 			"""
 		print(f"\n{query}")
 		logs = frappe.db.sql(query, as_dict=1)
@@ -258,6 +261,7 @@ def _check_maintenance_schedule_conflict(asset, from_date, to_date=None):
 							OR 
 						(s.end_date BETWEEN '{from_date}' AND '{to_date}') 
 					) 
+				ORDER BY s.start_date
 			"""
 		print(f"\n{query}")
 		schedule = frappe.db.sql(query, as_dict=1)
@@ -269,6 +273,7 @@ def _check_maintenance_schedule_conflict(asset, from_date, to_date=None):
 					AND ( 
 						s.end_date >= '{from_date}' 
 					)
+				ORDER BY s.start_date
 			"""
 		print(f"\n{query}")
 		schedule = frappe.db.sql(query, as_dict=1)
@@ -283,11 +288,11 @@ def _check_conflict(asset, from_date, to_date=None):
 	if len(other_bookings) == 0 and len(maintenance_schedules) == 0:
 		return [available, None]
 
-	prioritize_maintenance = int(frappe.get_doc("Asset",asset).prioritize_maintenance) ## boolean field returns str '0' or '1'... =.=! 
+	prioritize_maintenance = int(frappe.get_doc("Asset",asset).prioritize_maintenance) ## boolean field returns str '0' or '1'... =.=! In python: '1'==True => False
 	if len(other_bookings) > 0:
 		available = False
 	elif len(maintenance_schedules) > 0 and prioritize_maintenance:
-		print(f'\n\n prioritize_maintenance => {prioritize_maintenance}, {type(prioritize_maintenance)}')
+		##print(f'\n\n prioritize_maintenance => {prioritize_maintenance}, {type(prioritize_maintenance)}')
 		available = False
 
 	msgs = []
@@ -308,7 +313,10 @@ def _check_conflict(asset, from_date, to_date=None):
 		msg = f"{schedule.asset_name} scheduled for maintenance by {schedule.assign_to_name} from {schedule.start_date} to {schedule.end_date}"
 		msgs.append(msg)
 
-	remarks = "\n\n".join(msgs)
+	numbered_msgs = []
+	for idx, msg in enumerate(msgs):
+		numbered_msgs.append(f"{idx+1}.  {msg}   ;") ## provide some spacing because "read-only" text field will trim all formatting
+	remarks = "\n\n".join(numbered_msgs)
 	print(f"\n Remarks: {remarks}")
 	return [available, remarks]
 

@@ -12,8 +12,10 @@
   "item_name",
   "section_break_6",
   "maintenance_task",
+  "maintenance_type",
   "column_break_8",
   "task_name",
+  "description",
   "section_break_10",
   "periodicity",
   "start_date",
@@ -161,12 +163,24 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Maintenance Status",
-   "options": "Planned\nOverdue\nCancelled",
-   "reqd": 1
+   "options": "\nPlanned\nDelayed\nIn Progress\nCompleted\nCancelled\nOverdue",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "maintenance_task.maintenance_type",
+   "fieldname": "maintenance_type",
+   "fieldtype": "Read Only",
+   "label": "Maintenance Type"
+  },
+  {
+   "fetch_from": "maintenance_task.description",
+   "fieldname": "description",
+   "fieldtype": "Read Only",
+   "label": "Description"
   }
  ],
  "istable": 1,
- "modified": "2022-05-26 15:36:24.174132",
+ "modified": "2022-11-03 15:13:55.857094",
  "modified_by": "Administrator",
  "module": "Assets",
  "name": "Asset Maintenance Schedule",

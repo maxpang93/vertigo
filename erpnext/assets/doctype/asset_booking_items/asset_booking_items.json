@@ -92,13 +92,15 @@
   {
    "fieldname": "remarks",
    "fieldtype": "Long Text",
-   "label": "Remarks"
+   "label": "Remarks",
+   "no_copy": 1
   },
   {
    "default": "0",
    "fieldname": "available",
    "fieldtype": "Check",
    "label": "Available",
+   "no_copy": 1,
    "read_only": 1
   },
   {
@@ -115,6 +117,7 @@
    "fieldname": "asset_issue_journal_log",
    "fieldtype": "Link",
    "label": "Asset Issue Journal Log",
+   "no_copy": 1,
    "options": "Asset Journal Log",
    "read_only": 1
   },
@@ -122,6 +125,7 @@
    "fieldname": "asset_return_journal_log",
    "fieldtype": "Link",
    "label": "Asset Return Journal Log",
+   "no_copy": 1,
    "options": "Asset Journal Log",
    "read_only": 1
   },
@@ -129,6 +133,7 @@
    "fieldname": "asset_issue",
    "fieldtype": "Link",
    "label": "Asset Issue",
+   "no_copy": 1,
    "options": "Asset Journal",
    "read_only": 1
   },
@@ -136,6 +141,7 @@
    "fieldname": "asset_return",
    "fieldtype": "Link",
    "label": "Asset Return",
+   "no_copy": 1,
    "options": "Asset Journal",
    "read_only": 1
   },
@@ -172,7 +178,7 @@
   }
  ],
  "istable": 1,
- "modified": "2022-05-26 12:51:59.034506",
+ "modified": "2022-06-01 12:48:23.234597",
  "modified_by": "Administrator",
  "module": "Assets",
  "name": "Asset Booking Items",

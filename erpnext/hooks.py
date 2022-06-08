@@ -279,6 +279,13 @@ doc_events = {
 }
 
 scheduler_events = {
+	"cron": {
+		"0 2 * * *": [
+			"erpnext.assets.doctype.asset_maintenance_log.asset_maintenance_log.daily_check_maintenance_log_status",
+			"erpnext.assets.doctype.asset_maintenance.asset_maintenance.daily_create_maintenance_log_oneday_ahead",
+		]
+
+	},
 	"all": [
 		"erpnext.projects.doctype.project.project.project_status_update_reminder",
 		"erpnext.healthcare.doctype.patient_appointment.patient_appointment.set_appointment_reminder"
